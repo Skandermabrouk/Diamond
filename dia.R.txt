@@ -1,0 +1,54 @@
+diaments<-read.csv("C:\\Users\\skani\\Desktop\\Diamonds.csv")
+summary(diaments)
+head(diaments,10)
+df3 <- distinct(diaments)
+clean <- subset(diaments, x!=0 & y!=0 & z!=0)
+dim(clean)
+summary(clean)
+
+
+#feutuiring ingeniering 
+#prepare for model trainig 
+# Drop unwanted variables
+drop <- c("depth","table","x","y","z")
+clean = clean[, !(names(clean) %in% drop)]
+
+clean$logprice=log(clean$price + 1)
+clean$logcarat=log(clean$carat + 1)
+
+# clarity_ord
+clean$clarity_ord[clean$clarity=="I1"]<-1
+clean$clarity_ord[clean$clarity=="SI2"]<-2
+clean$clarity_ord[clean$clarity=="SI1"]<-3
+clean$clarity_ord[clean$clarity=="VS2"]<-4
+clean$clarity_ord[clean$clarity=="VS1"]<-5
+clean$clarity_ord[clean$clarity=="VVS2"]<-6
+clean$clarity_ord[clean$clarity=="VVS1"]<-7
+clean$clarity_ord[clean$clarity=="IF"]<-8
+
+# color_ord
+clean$color_ord[clean$color=="J"]<-1
+clean$color_ord[clean$color=="I"]<-2
+clean$color_ord[clean$color=="H"]<-3
+clean$color_ord[clean$color=="G"]<-4
+clean$color_ord[clean$color=="F"]<-5
+clean$color_ord[clean$color=="E"]<-6
+clean$color_ord[clean$color=="D"]<-7
+# cut_ord
+clean$cut_ord[clean$cut=="Fair"]<-1
+clean$cut_ord[clean$cut=="Good"]<-2
+clean$cut_ord[clean$cut=="Very Good"]<-3
+clean$cut_ord[clean$cut=="Premium"]<-4
+clean$cut_ord[clean$cut=="Ideal"]<-5
+
+
+head(clean, 10)
+
+
+
+
+
+library(Factoshiny)
+resultat <- Factoshiny(clean)
+
+
